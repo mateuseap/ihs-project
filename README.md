@@ -2,7 +2,7 @@
 
 ## 📂 Content
 
-- [Useful commands](docs/commands.md)
+- [Useful commands](docs/COMMANDS.md)
 
 ## 🌳 Project tree
 
