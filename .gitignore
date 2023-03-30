@@ -1,0 +1,13 @@
+build
+compile_commands.json
+.cache/
+*.swp
+__pycache__/
+
+*.cmd
+*.symvers
+*.ko
+*.mod.*
+*.mod
+*.o
+*.order
