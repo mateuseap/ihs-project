@@ -7,6 +7,9 @@
 ## 🌳 Project tree
 
     .
+    ├── app
+    │   └── game.py
+    │   └── utils.py
     ├── docs
     │   └── COMMANDS.md
     ├── driver
@@ -16,13 +19,6 @@
     │   └── pci
     │       ├── de2i-150.c
     │       └── Makefile
-    ├── examples
-    │   ├── c
-    │   │   ├── app-char.c
-    │   │   └── app-pci.c
-    │   └── python
-    │       ├── app-char.py
-    │       └── app-pci.py
     ├── include
     │   ├── display.h
     │   └── ioctl_cmds.h
@@ -31,6 +27,18 @@
     ├── Makefile
     ├── README.md
     └── setup.sh
+
+## 🚀 How to run the project
+
+Just open up a terminal and run the below commands:
+
+```bash
+./setup.sh
+cd app
+python game.py
+```
+
+Then you're ready to go 😁
 
 ## 👥 Group
 
