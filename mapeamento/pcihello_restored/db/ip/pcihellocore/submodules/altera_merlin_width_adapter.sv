@@ -1,19 +1,19 @@
-// (C) 2001-2012 Altera Corporation. All rights reserved.
-// Your use of Altera Corporation's design tools, logic functions and other 
+// (C) 2001-2017 Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
-// files any of the foregoing (including device programming or simulation 
+// files from any of the foregoing (including device programming or simulation 
 // files), and any associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License Subscription 
-// Agreement, Altera MegaCore Function License Agreement, or other applicable 
+// to the terms and conditions of the Intel Program License Subscription 
+// Agreement, Intel FPGA IP License Agreement, or other applicable 
 // license agreement, including, without limitation, that your use is for the 
-// sole purpose of programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the applicable 
+// sole purpose of programming logic devices manufactured by Intel and sold by 
+// Intel or its authorized distributors.  Please refer to the applicable 
 // agreement for further details.
 
 
-// $Id: //acds/rel/12.1/ip/merlin/altera_merlin_width_adapter/altera_merlin_width_adapter.sv#1 $
+// $Id: //acds/rel/17.1std/ip/merlin/altera_merlin_width_adapter/altera_merlin_width_adapter.sv#1 $
 // $Revision: #1 $
-// $Date: 2012/08/12 $
+// $Date: 2017/07/30 $
 // $Author: swbranch $
 
 // -----------------------------------------------------
@@ -42,6 +42,9 @@ module altera_merlin_width_adapter
     parameter IN_PKT_TRANS_EXCLUSIVE        = 88,
     parameter IN_PKT_BURST_TYPE_L           = 89,
     parameter IN_PKT_BURST_TYPE_H           = 90,
+    parameter IN_PKT_ORI_BURST_SIZE_L       = 91,
+    parameter IN_PKT_ORI_BURST_SIZE_H       = 93,
+    parameter IN_PKT_TRANS_WRITE            = 94,
     parameter IN_ST_DATA_W                  = 110,
 
     parameter OUT_PKT_ADDR_L                = 0,
@@ -60,14 +63,20 @@ module altera_merlin_width_adapter
     parameter OUT_PKT_TRANS_EXCLUSIVE       = 65,
     parameter OUT_PKT_BURST_TYPE_L          = 66,
     parameter OUT_PKT_BURST_TYPE_H          = 67,
+    parameter OUT_PKT_ORI_BURST_SIZE_L      = 68,
+    parameter OUT_PKT_ORI_BURST_SIZE_H      = 70,
     parameter OUT_ST_DATA_W                 = 92,
 
     parameter ST_CHANNEL_W                  = 32,
     parameter OPTIMIZE_FOR_RSP              = 0,
 
-    parameter PACKING                       = 1,    // 1: default packing with avalon slave
-    parameter CONSTANT_BURST_SIZE           = 1,    // 1: This is to optimize for Avalon only system as Avalon always send full size transaction
-    parameter RESPONSE_PATH     = 0     // 0: this is WA on command path or avalon system: response always merged, 1: this WA is on response path
+    parameter PACKING                       = 1,    // 1: Enables packing in Avalon systems
+    parameter CONSTANT_BURST_SIZE           = 1,    // 1: Optimizes for Avalon-only systems as those always have full size transactions
+    parameter RESPONSE_PATH                 = 0,    // 0: This adapter is on command path, 1: This adapter is on response path
+
+    // Address alignment can be turned off (an optimisation) if all connected
+    // masters only issue aligned addresses.
+    parameter ENABLE_ADDRESS_ALIGNMENT      = 1
 )
 ( 
     input                            clk,
@@ -124,18 +133,23 @@ module altera_merlin_width_adapter
     localparam ALIGNED_BITS_L       = clogb2(OUT_NUMSYMBOLS) - 1;
     localparam WN_ADDR_LSBS         = clogb2(RATIO);
     localparam WN_ADDR_SELECT       = clogb2(IN_NUMSYMBOLS);
+    localparam LOG_OUT_NUMSYMBOLS   = clogb2(OUT_NUMSYMBOLS);
     
     // ------------------------------------------------------------
     // Utility Functions
     // ------------------------------------------------------------
+
     function integer clogb2;
         input [63:0] value;
         begin
-            for (clogb2=0; value>0; clogb2=clogb2+1)
+            clogb2 = 0;
+            while (value>0) begin
                 value = value >> 1;
+                clogb2 = clogb2 + 1;
+            end
             clogb2 = clogb2 - 1;
         end
-    endfunction // clogb2
+    endfunction // clogb2    
 
     function integer min;
         input [31:0] a;
@@ -155,7 +169,7 @@ module altera_merlin_width_adapter
 
     function reg [clogb2(RATIO)-1:0] mask_to_select_correct_segments_for_size;
         input [clogb2(RATIO)-1:0] select_output_segment;
-        input [7:0]     size_ratio;
+        input [9:0]     size_ratio;
         input int       msb_select_bit;
 
         integer         i;
@@ -167,7 +181,7 @@ module altera_merlin_width_adapter
     endfunction 
   
     function reg [ADDRESS_W-1:0] choose_packed_address_base_on_size;
-        input [7:0]     size_ratio;
+        input [9:0]     size_ratio;
         input int       msb_select_bit;
         
         integer         i;
@@ -178,19 +192,25 @@ module altera_merlin_width_adapter
         end
     endfunction
 
-    function reg[7:0] bytes_in_transfer;
-        input [2:0] axsize;
+    // ------------------------------------------------------------
+    // Computes how many bytes are in this transfer, based on the size
+    // encoding.
+    // ------------------------------------------------------------
+    function reg[9:0] bytes_in_transfer;
+        input [BURST_SIZE_W-1:0] axsize;
     
         case (axsize)
-            3'b000: bytes_in_transfer = 8'b00000001;
-            3'b001: bytes_in_transfer = 8'b00000010;
-            3'b010: bytes_in_transfer = 8'b00000100;
-            3'b011: bytes_in_transfer = 8'b00001000;
-            3'b100: bytes_in_transfer = 8'b00010000;
-            3'b101: bytes_in_transfer = 8'b00100000;
-            3'b110: bytes_in_transfer = 8'b01000000;
-            3'b111: bytes_in_transfer = 8'b10000000;
-            default:bytes_in_transfer = 8'b00000001;
+            4'b0000: bytes_in_transfer = 10'b0000000001;
+            4'b0001: bytes_in_transfer = 10'b0000000010;
+            4'b0010: bytes_in_transfer = 10'b0000000100;
+            4'b0011: bytes_in_transfer = 10'b0000001000;
+            4'b0100: bytes_in_transfer = 10'b0000010000;
+            4'b0101: bytes_in_transfer = 10'b0000100000;
+            4'b0110: bytes_in_transfer = 10'b0001000000;
+            4'b0111: bytes_in_transfer = 10'b0010000000;
+            4'b1000: bytes_in_transfer = 10'b0100000000;
+            4'b1001: bytes_in_transfer = 10'b1000000000;            
+            default: bytes_in_transfer = 10'b0000000001;
         endcase
 
     endfunction
@@ -260,6 +280,7 @@ module altera_merlin_width_adapter
     reg [RESPONSE_STATUS_W-1:0] in_response_status_field;
     reg                         in_cmpr_read;
     reg                         in_lock_field;
+    reg                         in_write;
     reg [BURST_TYPE_W-1:0]      in_burst_type_field;
     reg [BYTE_CNT_W-1:0]        quantized_byte_cnt_field;
                                 
@@ -328,49 +349,48 @@ module altera_merlin_width_adapter
         in_data_field            = in_data[IN_PKT_DATA_H       :IN_PKT_DATA_L       ];
         in_byteen_field          = in_data[IN_PKT_BYTEEN_H     :IN_PKT_BYTEEN_L     ];
         address_from_packet      = in_data[IN_PKT_ADDR_H       :IN_PKT_ADDR_L       ];
-        //in_address_field         = in_data[IN_PKT_ADDR_H       :IN_PKT_ADDR_L       ];
         in_byte_cnt_field        = in_data[IN_PKT_BYTE_CNT_H   :IN_PKT_BYTE_CNT_L   ];
         in_cmpr_read             = in_data[IN_PKT_TRANS_COMPRESSED_READ];
+        in_write                 = in_data[IN_PKT_TRANS_WRITE];
         in_lock_field            = in_data[IN_PKT_TRANS_EXCLUSIVE];
         in_burst_type_field      = in_data[IN_PKT_BURST_TYPE_H :IN_PKT_BURST_TYPE_L ];
         in_response_status_field = in_data[IN_PKT_RESPONSE_STATUS_H :IN_PKT_RESPONSE_STATUS_L];
     end
+
     // ----------------------------------------
     // Process unaligned address for first address of the burst
     // ----------------------------------------
-generate
-    // ----------------------------------------
-    // Do generate here, in case AVALON system then just bypass this
-    // as the address will be aligned
-    // ----------------------------------------
-if ((!CONSTANT_BURST_SIZE) & (IN_NUMSYMBOLS > OUT_NUMSYMBOLS)) begin // this needs for Wide-Narrow
-    reg [ADDRESS_W + (BWRAP_W-1) + 4:0]         address_for_alignment;
-    reg [ADDRESS_W + clogb2(IN_NUMSYMBOLS)-1:0] address_after_aligned;
+    generate
+    if (IN_NUMSYMBOLS > OUT_NUMSYMBOLS && ENABLE_ADDRESS_ALIGNMENT) begin
+        reg [ADDRESS_W + (BWRAP_W-1) + BURST_SIZE_W + BURST_TYPE_W - 1 :0] address_for_alignment;
+        reg [ADDRESS_W + clogb2(IN_NUMSYMBOLS)-1:0] address_after_aligned;
 
-    assign address_for_alignment = {address_from_packet, in_size_field};
-    assign address_for_adaptation       = address_after_aligned[ADDRESS_W-1:0];
-    
-    altera_merlin_address_alignment
+        assign address_for_alignment = {address_from_packet, in_size_field};
+        assign address_for_adaptation = address_after_aligned[ADDRESS_W-1:0];
+        
+        altera_merlin_address_alignment
         #(
-          .ADDR_W            (ADDRESS_W),
-          .BURSTWRAP_W       (BWRAP_W),
-          .INCREMENT_ADDRESS (0),
-          .NUMSYMBOLS        (IN_NUMSYMBOLS)
-          ) check_and_align_address_to_size
-            (
-             .clk(clk),
-             .reset(reset),
-             .in_data(address_for_alignment),
-             .out_data(address_after_aligned),
-             .in_valid(),
-             .in_sop(),
-             .in_eop(),
-             .out_ready()
-             );
-end else begin // Narrow-Wide: it process base on address, so we dont need do alignment
-    assign address_for_adaptation       = address_from_packet;
-end
-endgenerate
+           .ADDR_W            (ADDRESS_W),
+           .BURSTWRAP_W       (BWRAP_W),
+           .INCREMENT_ADDRESS (0),
+           .NUMSYMBOLS        (IN_NUMSYMBOLS),
+           .SIZE_W            (BURST_SIZE_W)
+        ) check_and_align_address_to_size
+        (
+           .clk       (clk),
+           .reset     (reset),
+           .in_data   (address_for_alignment),
+           .out_data  (address_after_aligned),
+           .in_valid  (),
+           .in_sop    (),
+           .in_eop    (),
+           .out_ready ()
+        );
+    end else begin
+        assign address_for_adaptation = address_from_packet;
+    end
+    endgenerate
+
     generate begin
         if (FIRST_EXISTS) begin
             always @* begin
@@ -410,24 +430,31 @@ endgenerate
       //-------------------------------------------------------
       //-------------------------------------------------------
       if (IN_NUMSYMBOLS > OUT_NUMSYMBOLS)  begin
-         //wire [SIZE_W-1:0] cmd_burst_size;
-         //assign cmd_burst_size = bytes_in_transfer(in_size_field);
-         // For Avalon system, it is always fullsize
+
          wire [31:0] cmd_burst_size = CONSTANT_BURST_SIZE ? IN_NUMSYMBOLS : bytes_in_transfer(in_size_field);
          
          // Below mess is just to avoid Quartus warnings about mis-sized assignments.
          wire [31:0] int_out_numsymbols = OUT_NUMSYMBOLS;
          wire [clogb2(OUT_NUMSYMBOLS):0] sized_out_numsymbols = int_out_numsymbols[clogb2(OUT_NUMSYMBOLS):0];
+
          wire [31:0] int_out_size = (cmd_burst_size < OUT_NUMSYMBOLS) ? cmd_burst_size : OUT_NUMSYMBOLS;
          wire [SIZE_W-1:0] sized_out_size = int_out_size[SIZE_W-1:0];
-         wire [31:0] int_ratio_minus_1 = (cmd_burst_size/OUT_NUMSYMBOLS) - 1;
+
+         wire [31:0] int_ratio_minus_1 = (cmd_burst_size / OUT_NUMSYMBOLS) - 1;
          wire [clogb2(RATIO)-1:0] sized_ratio_minus_1 = int_ratio_minus_1[clogb2(RATIO)-1:0];
+
          wire [31:0] int_log2_out_numsymbols = clogb2(OUT_NUMSYMBOLS);
          wire [BURST_SIZE_W-1:0] log2_out_numsymbols = int_log2_out_numsymbols[BURST_SIZE_W-1:0];
+
          wire [31:0] int_byte_cnt_factor = (in_size_field < log2_out_numsymbols) ? log2_out_numsymbols : in_size_field;
          wire [BURST_SIZE_W-1:0] sized_byte_cnt_factor = int_byte_cnt_factor[BURST_SIZE_W-1:0];
 
+         reg single_response_expected;
+         reg only_one_segment_asserted;
+         reg [RATIO-1:0] segments_with_be_asserted;
          reg [clogb2(RATIO)-1:0] count;
+
+         assign single_response_expected = (RESPONSE_PATH && ((only_one_segment_asserted && in_startofpacket && in_endofpacket) || in_write));      
 
          always @(posedge clk, posedge reset) begin
             if (reset) begin
@@ -443,7 +470,7 @@ endgenerate
                // then wait until one arrives.
                if (~use_reg) begin
 
-                  if (CONSTANT_BURST_SIZE) begin // indicate when the system contains ONLY Avalon masters and slave
+                  if (CONSTANT_BURST_SIZE) begin // when the system contains ONLY Avalon masters and slaves
                       address_reg[ADDRESS_W -1 : WN_ADDR_SELECT] <= in_address_field[ADDRESS_W -1 : WN_ADDR_SELECT];
                       address_reg[WN_ADDR_SELECT - 1 : 0]        <= sized_out_numsymbols;
                       data_reg     <= in_data_field[IN_DATA_W-1:OUT_NUMSYMBOLS*SYMBOL_W];
@@ -455,8 +482,8 @@ endgenerate
                   end
                   
                   endofpacket_reg <= in_endofpacket;
-		          
-                  if (in_valid && out_ready && !in_cmpr_read && (cmd_burst_size > OUT_NUMSYMBOLS)) begin
+
+                  if (in_valid && out_ready && !in_cmpr_read && (cmd_burst_size > OUT_NUMSYMBOLS) && !single_response_expected) begin
                      // Data has arrived!
                      count   <= sized_ratio_minus_1;
                      use_reg <= 1'b1;
@@ -488,7 +515,7 @@ endgenerate
 
 
          always @* begin
-	        // Calculate in_ready.
+            // Calculate in_ready.
             // If count is 0, then we don't have data underway, and we 
             // definitely won't be ready for it the first time 'round.
             // If count is '1', then we're finishing a set, and we're 
@@ -505,12 +532,12 @@ endgenerate
             out_endofpacket           = 0;
                                       
             out_size_field            = (cmd_burst_size < OUT_NUMSYMBOLS) ? in_size_field : log2_out_numsymbols;
-            if (CONSTANT_BURST_SIZE) begin // For Avalon ONlY
+            if (CONSTANT_BURST_SIZE) begin // For Avalon only
                 out_byteen_field   = in_byteen_field[OUT_NUMSYMBOLS-1:0];
                 out_data_field     = in_data_field[OUT_NUMSYMBOLS * SYMBOL_W-1:0];
                 out_byte_cnt_field = in_byte_cnt_field;
             end else begin
-                out_byte_cnt_field        = in_byte_cnt_field >> clogb2(IN_NUMSYMBOLS) << sized_byte_cnt_factor;
+                out_byte_cnt_field = in_byte_cnt_field >> clogb2(IN_NUMSYMBOLS) << sized_byte_cnt_factor;
             end
              
             out_first_field           = in_first_field;
@@ -520,35 +547,37 @@ endgenerate
             out_lock_field            = in_lock_field;
             out_burst_type_field      = in_burst_type_field;
             out_response_status_field = in_response_status_field;
-            // Case when command size <= OUT_NUMSYMBOL: burst untouched and when unalgined, use address from packet
-            // and send this "unligned" address (if happens) to the network
+
+            // Case when command size <= OUT_NUMSYMBOLS: pass the cycle
+            // through, unmodified
             if (cmd_burst_size <= OUT_NUMSYMBOLS) begin
                 out_endofpacket = in_endofpacket;
                 in_address_field = address_from_packet;
-            end //(cmd_burst_size <= OUT_NUMSYMBOLS)
+            end // (cmd_burst_size <= OUT_NUMSYMBOLS)
             else begin 
-                // Case when WA need to split data, first address of the burst, the WA need align and send this align address
-                // to the network.
+                // Case when we need to bus size data (size > OUT_NUMSYMBOLS). 
                 out_lock_field     = 0;
-                // Change burst type 'FIXED' to 'Reserved' 
+                // Change fixed burst type opcodes to the repeated wrap
+                // opcode.
                 if (in_burst_type_field == 2'b00) begin
                     out_burst_type_field = 2'b11;
                 end
+                // On the first address of the burst, align and send this 
+                // address to the network
                 in_address_field = address_for_adaptation;
             end // (cmd_burst_size > OUT_NUMSYMBOLS)
 
             out_address_field         = in_address_field;
             int_output_sel            = in_address_field >> log2_out_numsymbols ;
-            if ( in_cmpr_read )
+            if (in_cmpr_read)
                 out_endofpacket = 1;
             
             if (use_reg) begin
 
                out_startofpacket = 0;
-               // If it's the Last cycle, or if there's no more data, 
+               // If it's the last cycle, or if there's no more data, 
                // we can allow an endofpacket.
-
-               if ((count==1)) 
+               if (count == 1) 
                   out_endofpacket = endofpacket_reg;
                
                out_byte_cnt_field = byte_cnt_reg;
@@ -556,7 +585,6 @@ endgenerate
                if (CONSTANT_BURST_SIZE) begin // Avalon system
                    out_data_field     = data_reg[(OUT_NUMSYMBOLS * SYMBOL_W)-1:0];
                    out_byteen_field   = byteen_reg[OUT_NUMSYMBOLS-1:0];
-                   // Avoid QIS warning: used but not assgin
                    byteen_array       = '{RATIO {0} };
                    data_array         = '{RATIO {0} };
                end
@@ -568,6 +596,17 @@ endgenerate
                 out_byteen_field          = byteen_array[output_sel];
                 out_data_field            = data_array[output_sel];
             end
+            
+            // Check each output-sized segment to see whether it 
+            // is enabled (byteenables)
+            segments_with_be_asserted = 0;
+            for (i = 0; i < RATIO; i=i+1) begin
+                segments_with_be_asserted[i] = |in_byteen_field[i*OUT_BYTEEN_W +: OUT_BYTEEN_W];
+            end
+
+            // Determine whether only one segment is asserted. This code detects a power of two,
+            // i.e. only 1 bit is asserted.
+            only_one_segment_asserted = (segments_with_be_asserted && !(segments_with_be_asserted & (segments_with_be_asserted - 1))); 
 
             //-----------------------------------------
             // Optimization for non-bursting wide-narrow response.
@@ -576,7 +615,7 @@ endgenerate
             // byteenables. Just pass that segment through and drop
             // the rest. This should synthesize to an and-or mux.
             //-----------------------------------------
-            if (OPTIMIZE_FOR_RSP) begin
+            if (OPTIMIZE_FOR_RSP | single_response_expected) begin
                 out_startofpacket  = in_startofpacket;
                 out_endofpacket    = in_endofpacket;
                 in_ready           = out_ready;
@@ -599,6 +638,10 @@ endgenerate
                     out_data_field |= mask & in_data_field[i*OUT_SEGMENT_W +: OUT_SEGMENT_W];
                     out_byteen_field |= in_byteen_field[i*OUT_NUMSYMBOLS +: OUT_NUMSYMBOLS];
                 end
+            end
+            else begin  // to prevent latches
+                j = 0;
+                mask = '0;
             end
 
          end // always @ *
@@ -647,6 +690,7 @@ endgenerate
          reg                     p0_use_reg;
          reg [ST_CHANNEL_W-1:0]  p0_channel;
          reg [BURST_SIZE_W-1:0]  p0_burst_size;
+		 reg [BURST_SIZE_W-1:0]  p0_ori_burst_size;
          reg                     p0_out_lock_field;
          reg [BURST_TYPE_W-1:0]  p0_burst_type_field;
          
@@ -665,6 +709,7 @@ endgenerate
          reg [LAST_W-1:0]        p0_reg_last_field;
          reg [ST_CHANNEL_W-1:0]  p0_reg_channel;
          reg [BURST_SIZE_W-1:0]  p0_reg_burst_size;
+		 reg [BURST_SIZE_W-1:0]  p0_reg_ori_burst_size;
          reg [BURST_TYPE_W-1:0]  p0_reg_burst_type_field;
          reg [RESPONSE_STATUS_W-1:0] p0_reg_response_status_field;
          reg                     p0_reg_out_lock_field;
@@ -704,8 +749,8 @@ endgenerate
          wire [31:0] int_in_numsymbols = IN_NUMSYMBOLS;
          wire [BYTE_CNT_W-1:0] byte_cnt_sized_in_num_symbols = 
             int_in_numsymbols[BYTE_CNT_W-1:0];
-         reg [7:0]  cmd_burst_size;
-         reg [31:0] out_numsymbols_wire = clogb2(OUT_NUMSYMBOLS);
+         reg [9:0]  cmd_burst_size;
+         wire [31:0] out_numsymbols_wire = LOG_OUT_NUMSYMBOLS;
          wire [31:0]        int_encoded_burstsize = NW_BITFORSELECT_R; //NW_BITFORSELECT_R is the log2 of IN_NUMSYMBOLS
          wire [BURST_SIZE_W-1:0] encoded_burstsize = int_encoded_burstsize[BURST_SIZE_W-1:0];      
             
@@ -713,8 +758,25 @@ endgenerate
         if (RESPONSE_PATH == 0) begin
             assign in_burstwrap_field = in_data[IN_PKT_BURSTWRAP_H:IN_PKT_BURSTWRAP_L];
         end
+        else begin
+            assign in_burstwrap_field = {BWRAP_W{1'b1}};
+        end   
 
-        reg [7:0]   size_ratio;
+		// To use "read response merging" the Width adapter need to know the size of the command
+		// to check if downside happen. For AXI system, the fifo will store this number (non-packing: we use "combined width adapter")
+		// but in case system without AXI, the system use stand alone width adapter and it cannot read this value
+		// Make a condition incase we see stand alone WA, set this in_command_burst_size to input size
+        //wire [2:0] in_command_burst_size = out_numsymbols_wire[2:0];
+		//if (!((PACKING == 1) & (CONSTANT_BURST_SIZE == 1))) // stand alone WA
+		//	begin
+		//		assign in_command_burst_size = in_command_size_data;
+		//	end
+		reg [BURST_SIZE_W-1:0]      	in_ori_size_field;
+		always @* begin
+			in_ori_size_field        = in_data[IN_PKT_ORI_BURST_SIZE_H :IN_PKT_ORI_BURST_SIZE_L ];
+		end
+		
+        reg [9:0]   size_ratio;
          // --------------------------------------------
          // Stage 0: buffer the input cycle if read burst 
          // uncompression is going to happen.
@@ -738,6 +800,7 @@ endgenerate
                p0_reg_last_field     <= '0;
                p0_reg_channel        <= '0;
                p0_reg_burst_size     <= '0;
+			   p0_reg_ori_burst_size     <= '0;
                p0_reg_out_lock_field <= '0;
                p0_reg_burst_type_field      <= '0;
                p0_reg_response_status_field <= '0;
@@ -761,6 +824,7 @@ endgenerate
                   p0_reg_last_field     <= p0_last_field;    
                   p0_reg_channel        <= p0_channel;
                   p0_reg_burst_size     <= p0_burst_size;
+				  p0_reg_ori_burst_size <= p0_ori_burst_size;
                   p0_reg_out_lock_field <= p0_out_lock_field;
                   p0_reg_burst_type_field       <= p0_burst_type_field;
                   p0_reg_response_status_field  <= p0_response_status_field;
@@ -795,6 +859,7 @@ endgenerate
             p0_last_field     = in_last_field;
             p0_channel        = in_channel;
             p0_burst_size     = in_size_field;
+			p0_ori_burst_size = in_ori_size_field;
             p0_out_lock_field = in_lock_field;
             p0_burst_type_field         = in_burst_type_field;
             p0_response_status_field    = in_response_status_field;
@@ -812,6 +877,7 @@ endgenerate
                p0_last_field     = p0_reg_last_field;
                p0_channel        = p0_reg_channel;
                p0_burst_size     = p0_reg_burst_size;
+			   p0_ori_burst_size = p0_reg_ori_burst_size;
                p0_out_lock_field = p0_reg_out_lock_field;
                p0_burst_type_field      = p0_reg_burst_type_field;
                p0_response_status_field = p0_reg_response_status_field;
@@ -860,7 +926,8 @@ endgenerate
             .ADDR_W      (ADDRESS_W),
             .BURSTWRAP_W (BWRAP_W),
             .BYTE_CNT_W  (BYTE_CNT_W),
-            .PKT_SYMBOLS (IN_NUMSYMBOLS)
+            .PKT_SYMBOLS (IN_NUMSYMBOLS),
+            .BURST_SIZE_W(BURST_SIZE_W)
          ) uncompressor (
             .clk                  (clk),
             .reset                (reset),
@@ -951,7 +1018,9 @@ endgenerate
             p1_shift_correct_ouput_segments = p1_address_field[NW_BITFORSELECT_L:NW_BITFORSELECT_R];
             
             // size ratio betwen command size and response size
-            cmd_burst_size = bytes_in_transfer(in_command_size_data);
+            //cmd_burst_size = bytes_in_transfer(in_command_burst_size);
+			cmd_burst_size = bytes_in_transfer(p0_ori_burst_size);
+			
             size_ratio = cmd_burst_size >> in_size_field; 
             
             if (RESPONSE_PATH == 0) begin 
@@ -1009,31 +1078,35 @@ endgenerate
                     out_byte_cnt_field  = p1_byte_cnt_unpack_field;
                     out_size_field      = p1_burst_size;
                  end
-                 out_response_status_field = p1_response_status_field;
             end else begin // the WA is on reponse path and default: PACKING = 1
-                if (in_size_field < in_command_size_data) begin // downsize happen on command path, the response need packing
+                //if (in_size_field < in_command_burst_size) begin // downsize happen on command path, the response need packing
+				if (in_size_field < in_ori_size_field) begin // downsize happen on command path, the response need packing
                     out_data_field    = data_reg  
                         | (p1_data_field << (p1_shift_correct_ouput_segments *IN_NUMSYMBOLS*SYMBOL_W));
                     out_address_field = p1_address_field & out_address_field_mask;
                     out_size_field      = p1_burst_size;
                     out_byte_cnt_field  = p1_byte_cnt_field;
-                    
-                    // Response merging: rules: DECERR(11) > SLVERR (10) > OKAY (00)
-                    // EXOKAY will not happen on merging
-                    out_response_status_field = '0;
-                    if (response_status_reg >= p1_response_status_field) begin
-                        out_response_status_field = response_status_reg;
-                    end else begin
-                        out_response_status_field = p1_response_status_field;
-                    end
-
                 end else begin // narrow transaction on command path, reponse packet will not packed
                     out_data_field      = (p1_data_field << (p1_shift_correct_ouput_segments *IN_NUMSYMBOLS*SYMBOL_W));
                     out_byte_cnt_field  = p1_byte_cnt_field;
                     out_size_field      = p1_burst_size;
-                    out_response_status_field   = p1_response_status_field;
                 end
             end
+			
+			//if (in_size_field < in_command_burst_size) begin // downsize happen on command path, the response need packing
+			if (in_size_field < in_ori_size_field) begin // downsize happen on command path, the response need packing
+                // Response merging: rules: DECERR(11) > SLVERR (10) > OKAY (00)
+                // EXOKAY will not happen on merging
+                out_response_status_field = '0;
+                if (response_status_reg >= p1_response_status_field) begin
+                    out_response_status_field = response_status_reg;
+                end else begin
+                    out_response_status_field = p1_response_status_field;
+                end
+            end else begin // narrow transaction on command path, reponse packet will not packed
+                out_response_status_field   = p1_response_status_field;
+            end
+				
             out_cmpr_read      = p1_cmpr_read;
 
             // nothing touches these fields, so assign them

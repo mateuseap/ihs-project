@@ -7,6 +7,7 @@ module pcihellocore (
 		output wire [31:0] hex_display_external_connection_export, // hex_display_external_connection.export
 		output wire [31:0] hexport_external_connection_export,     //     hexport_external_connection.export
 		input  wire [15:0] inport_external_connection_export,      //      inport_external_connection.export
+		input  wire [31:0] key_external_connection_export,         //         key_external_connection.export
 		output wire [31:0] led_green_external_connection_export,   //   led_green_external_connection.export
 		output wire [31:0] led_red_external_connection_export,     //     led_red_external_connection.export
 		input  wire        pcie_hard_ip_0_pcie_rstn_export,        //        pcie_hard_ip_0_pcie_rstn.export
@@ -111,7 +112,7 @@ module pcihellocore (
 		.reset_n  (~rst_controller_reset_out_reset),   //               reset.reset_n
 		.address  (mm_interconnect_0_key_s1_address),  //                  s1.address
 		.readdata (mm_interconnect_0_key_s1_readdata), //                    .readdata
-		.in_port  ()                                   // external_connection.export
+		.in_port  (key_external_connection_export)     // external_connection.export
 	);
 
 	pcihellocore_hexport led_green (

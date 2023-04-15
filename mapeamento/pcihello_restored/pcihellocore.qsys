@@ -147,6 +147,11 @@
    type="conduit"
    dir="end" />
  <interface
+   name="key_external_connection"
+   internal="key.external_connection"
+   type="conduit"
+   dir="end" />
+ <interface
    name="led_green_external_connection"
    internal="led_green.external_connection"
    type="conduit"

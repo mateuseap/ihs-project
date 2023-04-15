@@ -1,13 +1,13 @@
-// (C) 2001-2012 Altera Corporation. All rights reserved.
-// Your use of Altera Corporation's design tools, logic functions and other 
+// (C) 2001-2017 Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions and other 
 // software and tools, and its AMPP partner logic functions, and any output 
-// files any of the foregoing (including device programming or simulation 
+// files from any of the foregoing (including device programming or simulation 
 // files), and any associated documentation or information are expressly subject 
-// to the terms and conditions of the Altera Program License Subscription 
-// Agreement, Altera MegaCore Function License Agreement, or other applicable 
+// to the terms and conditions of the Intel Program License Subscription 
+// Agreement, Intel FPGA IP License Agreement, or other applicable 
 // license agreement, including, without limitation, that your use is for the 
-// sole purpose of programming logic devices manufactured by Altera and sold by 
-// Altera or its authorized distributors.  Please refer to the applicable 
+// sole purpose of programming logic devices manufactured by Intel and sold by 
+// Intel or its authorized distributors.  Please refer to the applicable 
 // agreement for further details.
 
 
@@ -24,9 +24,9 @@
 // agreement for further details.
 
 
-// $Id: //acds/rel/12.1/ip/merlin/altera_merlin_slave_agent/altera_merlin_burst_uncompressor.sv#1 $
+// $Id: //acds/rel/17.1std/ip/merlin/altera_merlin_slave_agent/altera_merlin_burst_uncompressor.sv#1 $
 // $Revision: #1 $
-// $Date: 2012/08/12 $
+// $Date: 2017/07/30 $
 // $Author: swbranch $
 
 // ------------------------------------------
@@ -88,16 +88,18 @@ module altera_merlin_burst_uncompressor
 // being transferred.
 // ---------------------------------------------------
 function reg[63:0] bytes_in_transfer;
-    input [2:0] axsize;
+    input [BURST_SIZE_W-1:0] axsize;
     case (axsize)
-        3'b000: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000000001;
-        3'b001: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000000010;
-        3'b010: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000000100;
-        3'b011: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000001000;
-        3'b100: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000010000;
-        3'b101: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000100000;
-        3'b110: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000001000000;
-        3'b111: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000010000000;
+        4'b0000: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000000001;
+        4'b0001: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000000010;
+        4'b0010: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000000100;
+        4'b0011: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000001000;
+        4'b0100: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000010000;
+        4'b0101: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000100000;
+        4'b0110: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000001000000;
+        4'b0111: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000010000000;
+        4'b1000: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000100000000;
+        4'b1001: bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000001000000000;
         default:bytes_in_transfer = 64'b0000000000000000000000000000000000000000000000000000000000000001;
     endcase
 
@@ -148,16 +150,18 @@ endfunction
    //   some value, multiple times in the packet.
   
    reg burst_uncompress_busy;
-   reg [BYTE_CNT_W-1:0] burst_uncompress_byte_counter;
+   reg [BYTE_CNT_W:0] burst_uncompress_byte_counter;
+   wire [BYTE_CNT_W-1:0] burst_uncompress_byte_counter_lint;
    wire first_packet_beat;
    wire last_packet_beat;
 
    assign first_packet_beat = sink_valid & ~burst_uncompress_busy;
+   assign burst_uncompress_byte_counter_lint = burst_uncompress_byte_counter[BYTE_CNT_W-1:0];
 
    // First cycle: burst_uncompress_byte_counter isn't ready yet, mux the input to
    // the output.
    assign source_byte_cnt =
-     first_packet_beat ? sink_byte_cnt : burst_uncompress_byte_counter;
+     first_packet_beat ? sink_byte_cnt : burst_uncompress_byte_counter_lint;
    assign source_valid = sink_valid;
   
    // Last packet beat is set throughout receipt of an uncompressed read burst
@@ -166,7 +170,7 @@ endfunction
    assign last_packet_beat = ~sink_is_compressed |
      (
      burst_uncompress_busy ?
-       (sink_valid & (burst_uncompress_byte_counter == num_symbols)) :
+       (sink_valid & (burst_uncompress_byte_counter_lint == num_symbols)) :
          sink_valid & (sink_byte_cnt == num_symbols)
      );
   
@@ -185,40 +189,45 @@ endfunction
          end
          else begin
            if (burst_uncompress_busy) begin
-             burst_uncompress_byte_counter <= burst_uncompress_byte_counter ? 
-               (burst_uncompress_byte_counter - num_symbols) :
+             burst_uncompress_byte_counter <= (burst_uncompress_byte_counter > 0) ? 
+               (burst_uncompress_byte_counter_lint - num_symbols) :
                (sink_byte_cnt - num_symbols);
            end
            else begin // not busy, at least one more beat to go
              burst_uncompress_byte_counter <= sink_byte_cnt - num_symbols;
              // To do: should busy go true for numsymbols-size compressed
              // bursts?
-             burst_uncompress_busy <= '1;
+             burst_uncompress_busy <= 1'b1;
            end
          end
        end
      end
    end
   
-   wire [ADDR_W - 1 : 0 ] addr_width_burstwrap;
    reg [ADDR_W - 1 : 0 ] burst_uncompress_address_base;
    reg [ADDR_W - 1 : 0] burst_uncompress_address_offset;
 
    wire [63:0] decoded_burstsize_wire;
    wire [ADDR_W-1:0] decoded_burstsize;
 
+
+   localparam ADD_BURSTWRAP_W = (ADDR_W > BURSTWRAP_W) ? ADDR_W : BURSTWRAP_W;
+   wire [ADD_BURSTWRAP_W-1:0] addr_width_burstwrap;
    // The input burstwrap value can be used as a mask against address values,
    // but with one caveat: the address width may be (probably is) wider than 
    // the burstwrap width.  The spec says: extend the msb of the burstwrap 
    // value out over the entire address width (but only if the address width
    // actually is wider than the burstwrap width; otherwise it's a 0-width or
    // negative range and concatenation multiplier). 
-   assign addr_width_burstwrap[BURSTWRAP_W - 1 : 0] = sink_burstwrap;
    generate
       if (ADDR_W > BURSTWRAP_W) begin : addr_sign_extend
          // Sign-extend, just wires:
-         assign addr_width_burstwrap[ADDR_W - 1 : BURSTWRAP_W] =
-            {(ADDR_W - BURSTWRAP_W) {sink_burstwrap[BURSTWRAP_W - 1]}};
+            assign addr_width_burstwrap[ADDR_W - 1 : BURSTWRAP_W] =
+                {(ADDR_W - BURSTWRAP_W) {sink_burstwrap[BURSTWRAP_W - 1]}};
+            assign addr_width_burstwrap[BURSTWRAP_W-1:0] = sink_burstwrap [BURSTWRAP_W-1:0];
+      end
+      else begin
+            assign addr_width_burstwrap[BURSTWRAP_W-1 : 0] = sink_burstwrap;
       end
    endgenerate
 
@@ -227,20 +236,21 @@ endfunction
        burst_uncompress_address_base <= '0;
      end
      else if (first_packet_beat & source_ready) begin
-       burst_uncompress_address_base <= sink_addr & ~addr_width_burstwrap;
+       burst_uncompress_address_base <= sink_addr & ~addr_width_burstwrap[ADDR_W-1:0];
      end
    end
 
    assign decoded_burstsize_wire = bytes_in_transfer(sink_burstsize);  //expand it to 64 bits
    assign decoded_burstsize = decoded_burstsize_wire[ADDR_W-1:0];      //then take the width that is needed
 
-   wire [ADDR_W - 1 : 0] p1_burst_uncompress_address_offset =
+   wire [ADDR_W : 0] p1_burst_uncompress_address_offset =
    (
      (first_packet_beat ?
        sink_addr :
        burst_uncompress_address_offset) + decoded_burstsize
     ) &
-    addr_width_burstwrap;
+    addr_width_burstwrap[ADDR_W-1:0];
+    wire [ADDR_W-1:0] p1_burst_uncompress_address_offset_lint = p1_burst_uncompress_address_offset [ADDR_W-1:0];
 
    always @(posedge clk or posedge reset) begin
      if (reset) begin
@@ -248,7 +258,7 @@ endfunction
      end
      else begin
        if (source_ready & source_valid) begin
-         burst_uncompress_address_offset <= p1_burst_uncompress_address_offset;
+         burst_uncompress_address_offset <= p1_burst_uncompress_address_offset_lint;
          // if (first_packet_beat) begin
          //   burst_uncompress_address_offset <=
          //     (sink_addr + num_symbols) & addr_width_burstwrap;
