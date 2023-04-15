@@ -2,18 +2,25 @@ import os, sys
 from fcntl import ioctl
 from utils import *
 
-def display_seven_segment(num, display):
+def show_seven_segment(fd, num, display):
     data = seven_segment_encoder(num)
-    ioctl(os.open(sys.argv[1], os.O_RDWR), display)
-    retval = os.write(os.open(sys.argv[1], os.O_RDWR), data.to_bytes(4, 'little'))
-    print(retval)
+    ioctl(fd, display)
+    retval = os.write(fd, data.to_bytes(4, 'little'))
+    print(f'>>> wrote {retval} bytes')
 
 def main():
-    print('Insira um digito para aparecer no display de 7 segmentos: ')
+    if len(sys.argv) < 2:
+        print('Error: expected more command line arguments')
+        print(f'Syntax: {sys.argv[0]} </dev/device_file>')
+        exit(1)
+
+    fd = os.open(sys.argv[1], os.O_RDWR)
+
+    print('Input a single number that will appear on 7-segment display: ')
     number = input()
 
-    display_seven_segment(number, WR_L_DISPLAY)
-    display_seven_segment(number, WR_R_DISPLAY)
+    show_seven_segment(fd, number, WR_L_DISPLAY)
+    show_seven_segment(fd, number, WR_R_DISPLAY)
 
 if __name__ == '__main__':
     main()
