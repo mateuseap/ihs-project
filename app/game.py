@@ -1,4 +1,4 @@
-import os, sys
+import os
 from fcntl import ioctl
 from utils import *
 
@@ -9,15 +9,10 @@ def show_seven_segment(fd, num, display):
     print(f'>>> wrote {retval} bytes')
 
 def main():
-    if len(sys.argv) < 2:
-        print('Error: expected more command line arguments')
-        print(f'Syntax: {sys.argv[0]} </dev/device_file>')
-        exit(1)
-
-    fd = os.open(sys.argv[1], os.O_RDWR)
+    fd = os.open(PATH, os.O_RDWR)
 
     print('Input a single number that will appear on 7-segment display: ')
-    number = input()
+    number = int(input())
 
     show_seven_segment(fd, number, WR_L_DISPLAY)
     show_seven_segment(fd, number, WR_R_DISPLAY)
