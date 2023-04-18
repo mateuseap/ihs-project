@@ -34,7 +34,7 @@
 Just open up a terminal and run the below commands:
 
 ```bash
-./setup.sh
+sh setup.sh
 cd app
 python game.py
 ```
