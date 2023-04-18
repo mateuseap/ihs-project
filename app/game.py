@@ -12,19 +12,19 @@ pygame.display.set_caption('A vingança de Zeca Urubu') #o nome da janela
 WINDOW_SIZE = (1000,600) #variavel pra guardar o tamanho da minha janela
 screen = pygame.display.set_mode(WINDOW_SIZE,0,32) #janela
 
-player_walkR = [pygame.image.load('Imagens/zequinha1d.png'), pygame.image.load('Imagens/zequinha2d.png'), pygame.image.load('Imagens/zequinha3d.png'), pygame.image.load('Imagens/zequinha4d.png'), pygame.image.load('Imagens/zequinha5d.png'), pygame.image.load('Imagens/zequinha6d.png'), pygame.image.load('Imagens/zequinha7d.png'), pygame.image.load('Imagens/zequinha8d.png'), pygame.image.load('Imagens/zequinha9d.png'), pygame.image.load('Imagens/zequinha10d.png'), pygame.image.load('Imagens/zequinha11d.png'), pygame.image.load('Imagens/zequinha12d.png'), pygame.image.load('Imagens/zequinha13d.png'), pygame.image.load('Imagens/zequinha14d.png'), pygame.image.load('Imagens/zequinha15d.png')] #carrega a imagem do meu personagem
-player_walkL = [pygame.image.load('Imagens/zequinha1e.png'), pygame.image.load('Imagens/zequinha2e.png'), pygame.image.load('Imagens/zequinha3e.png'), pygame.image.load('Imagens/zequinha4e.png'), pygame.image.load('Imagens/zequinha5e.png'), pygame.image.load('Imagens/zequinha6e.png'), pygame.image.load('Imagens/zequinha7e.png'), pygame.image.load('Imagens/zequinha8e.png'), pygame.image.load('Imagens/zequinha9e.png'), pygame.image.load('Imagens/zequinha10e.png'), pygame.image.load('Imagens/zequinha11e.png'), pygame.image.load('Imagens/zequinha12e.png'), pygame.image.load('Imagens/zequinha13e.png'), pygame.image.load('Imagens/zequinha14e.png'), pygame.image.load('Imagens/zequinha15e.png')]
-player_jump = [pygame.image.load('Imagens/zequinhajumpd.png'), pygame.image.load('Imagens/zequinhajumpe.png')]
-obstaculo_sprite = pygame.image.load('Imagens/obstaculo.png')
-obstaculo1_sprite = pygame.image.load('Imagens/obstaculo1.jpg')
-bg = pygame.image.load('Imagens/background.png')
-startScreen = pygame.image.load('Imagens/startScreen.png')
-jogar = pygame.image.load('Imagens/jogar.png')
-instrucoes = pygame.image.load('Imagens/instrucoes.png')
-sair = pygame.image.load('Imagens/sair.png')
-gameOverScreen= pygame.image.load('Imagens/gameover.png')
-gameOverPlayAgain= pygame.image.load('Imagens/gameoverPlayAgain.png')
-gameOverSair= pygame.image.load('Imagens/gameoverSair.png')
+player_walkR = [pygame.image.load('assets/zequinha1d.png'), pygame.image.load('assets/zequinha2d.png'), pygame.image.load('assets/zequinha3d.png'), pygame.image.load('assets/zequinha4d.png'), pygame.image.load('assets/zequinha5d.png'), pygame.image.load('assets/zequinha6d.png'), pygame.image.load('assets/zequinha7d.png'), pygame.image.load('assets/zequinha8d.png'), pygame.image.load('assets/zequinha9d.png'), pygame.image.load('assets/zequinha10d.png'), pygame.image.load('assets/zequinha11d.png'), pygame.image.load('assets/zequinha12d.png'), pygame.image.load('assets/zequinha13d.png'), pygame.image.load('assets/zequinha14d.png'), pygame.image.load('assets/zequinha15d.png')] #carrega a imagem do meu personagem
+player_walkL = [pygame.image.load('assets/zequinha1e.png'), pygame.image.load('assets/zequinha2e.png'), pygame.image.load('assets/zequinha3e.png'), pygame.image.load('assets/zequinha4e.png'), pygame.image.load('assets/zequinha5e.png'), pygame.image.load('assets/zequinha6e.png'), pygame.image.load('assets/zequinha7e.png'), pygame.image.load('assets/zequinha8e.png'), pygame.image.load('assets/zequinha9e.png'), pygame.image.load('assets/zequinha10e.png'), pygame.image.load('assets/zequinha11e.png'), pygame.image.load('assets/zequinha12e.png'), pygame.image.load('assets/zequinha13e.png'), pygame.image.load('assets/zequinha14e.png'), pygame.image.load('assets/zequinha15e.png')]
+player_jump = [pygame.image.load('assets/zequinhajumpd.png'), pygame.image.load('assets/zequinhajumpe.png')]
+obstaculo_sprite = pygame.image.load('assets/obstaculo.png')
+obstaculo1_sprite = pygame.image.load('assets/obstaculo1.jpg')
+bg = pygame.image.load('assets/background.png')
+startScreen = pygame.image.load('assets/startScreen.png')
+jogar = pygame.image.load('assets/jogar.png')
+instrucoes = pygame.image.load('assets/instrucoes.png')
+sair = pygame.image.load('assets/sair.png')
+gameOverScreen= pygame.image.load('assets/gameover.png')
+gameOverPlayAgain= pygame.image.load('assets/gameoverPlayAgain.png')
+gameOverSair= pygame.image.load('assets/gameoverSair.png')
 last = "right"
 
 pulo = False
