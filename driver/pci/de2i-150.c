@@ -233,11 +233,11 @@ static long int my_ioctl(struct file*, unsigned int cmd, unsigned long arg)
 {
 	switch(cmd){
 	case RD_SWITCHES:
-		read_pointer = bar0_mmio + 0xC020;
+		read_pointer = bar0_mmio + 0xC080;
 		rd_name_idx = IDX_SWITCH;
 		break;
 	case RD_PBUTTONS:
-		read_pointer = bar0_mmio + 0xC060;
+		read_pointer = bar0_mmio + 0xC140;
 		rd_name_idx = IDX_PBUTTONS;
 		break;
 	case WR_L_DISPLAY:
@@ -299,7 +299,7 @@ static int __init my_pci_probe(struct pci_dev *dev, const struct pci_device_id *
 
 	/* initialize a default peripheral read and write pointer */
 	write_pointer = bar0_mmio + 0xC040;
-	read_pointer  = bar0_mmio + 0xC020;
+	read_pointer  = bar0_mmio + 0xC080;
 
 	return 0;
 }
