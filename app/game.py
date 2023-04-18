@@ -36,12 +36,7 @@ def main():
     # show_seven_segment(fd, number, WR_L_DISPLAY)
     # show_seven_segment(fd, number, WR_R_DISPLAY)
 
-    button = read_button(fd)
-    
-    if button == '0b1011':
-        green_leds_on(fd)
-        print(f'button {button} was pressed')
+    green_leds_on(fd)
 
 if __name__ == '__main__':
-    while True:
-        main()
+    main()
