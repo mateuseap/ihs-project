@@ -1,6 +1,5 @@
 import os
 from fcntl import ioctl
-from utils import *
 
 PATH = '/dev/mydev'
 
