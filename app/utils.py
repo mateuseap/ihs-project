@@ -1,3 +1,7 @@
+import os
+from fcntl import ioctl
+from utils import *
+
 PATH = '/dev/mydev'
 
 RD_SWITCHES = 24929
@@ -21,6 +25,14 @@ seven_segment_options = {
     "OFF" : 0b11111111
 }
 
+BUTTONS_OPTIONS = {
+    '0b1111' : "OFF",
+    '0b111' : "START",
+    '0b1011' : "UP", 
+    '0b1101' : "LEFT",
+    '0b1110' : "RIGHT"
+}
+
 def seven_segment_encoder(num):
     display = 0
     num_digits = 0
@@ -38,3 +50,42 @@ def seven_segment_encoder(num):
         display |= (seven_segment_options["OFF"] << 8 * i)
 
     return display
+
+def red_leds_on(fd, off):
+    if off:
+        data = 0b000000000000000000
+    else:
+        data = 0b111111111111111111
+
+    ioctl(fd, WR_RED_LEDS)
+    os.write(fd, data.to_bytes(4, 'little'))
+    print(f'>>> red leds on!')
+
+def green_leds_on(fd, off):
+    if off:
+        data = 0b000000000
+    else:
+        data = 0b111111111
+
+    ioctl(fd, WR_GREEN_LEDS)
+    os.write(fd, data.to_bytes(4, 'little'))
+    print(f'>>> green leds on!')
+
+def read_button(fd):
+    ioctl(fd, RD_PBUTTONS)
+    button = os.read(fd, 4)
+    button = bin(int.from_bytes(button, 'little'))
+    # print(f'>>> button {button}')
+    return button
+
+def read_switches(fd):
+    ioctl(fd, RD_SWITCHES)
+    switches = os.read(fd, 4)
+    switches = bin(int.from_bytes(switches, 'little'))  
+    print(f'>>> switches {switches}')
+
+def show_seven_segment(fd, num, display):
+    data = seven_segment_encoder(num)
+    ioctl(fd, display)
+    retval = os.write(fd, data.to_bytes(4, 'little'))
+    print(f'>>> wrote {retval} bytes')
