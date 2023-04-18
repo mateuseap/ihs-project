@@ -18,7 +18,7 @@ module pcihello(
 	KEY,
 
 	// switches
-	SW,
+   SW,
 	
 	//////////// SEG7 (Low Active) //////////
 	HEX0,
@@ -56,11 +56,11 @@ input 		          		CLOCK2_50;
 input 		          		CLOCK3_50;
 
 //////////// LED (High Active) //////////
-output		     [8:0]		LEDG;
-output		    [17:0]		LEDR;
+output		     [8:0]		LEDG; // green led
+output		    [17:0]		LEDR; // red led
 
 //////////// KEY (Active Low) //////////
-input 		     [3:0]		KEY;
+input 		     [3:0]		KEY; // push button -> active -> 0
 input            [17:0]	   SW;
 
 //////////// SEG7 (Low Active) //////////
@@ -89,12 +89,12 @@ inout 		          		FAN_CTRL;
 //=======================================================
 
 wire [31:0] hexbus;
-wire [15:0] inbus;
-wire [31:0] hexbus2;
-wire [31:0] led_red;
+wire [31:0] hex_bus;
+wire [31:0] inbus;
 wire [31:0] led_green;
-wire [31:0] key;
-wire [31:0] switch;
+wire [31:0] led_red;
+wire [31:0] push_button;
+
 
 
 //=======================================================
@@ -109,43 +109,39 @@ wire [31:0] switch;
         .pcie_hard_ip_0_refclk_export           (PCIE_REFCLK_P),           //    pcie_hard_ip_0_refclk.export
         .pcie_hard_ip_0_pcie_rstn_export        (PCIE_PERST_N),
         .hexport_external_connection_export     (hexbus),     // hexport_external_connection.export
-        .inport_external_connection_export      (inbus),       //  inport_external_connection.export
-		
-		.hex_display_external_connection_export (hexbus2),
-		.led_red_external_connection_export (led_red),
-		.led_green_external_connection_export (led_green),
-		.key_external_connection_export (key),
-		.switch_external_connection_export (switch)
-	);
+        .inport_external_connection_export      (inbus),      //  inport_external_connection.export
+		  .hex_display_external_connection_export (hex_bus),
+		  .led_green_external_connection_export (led_green),
+		  .led_red_external_connection_export (led_red),
+		  .push_button_external_connection_export (push_button)
+    );
 
 
 	//////////// FAN Control //////////
-assign FAN_CTRL = 1'bz; // turn off FAN
+assign FAN_CTRL = 1'b1; // turn on FAN
 
+// 7 seg right -> 2022
 assign HEX0 = hexbus[ 6: 0];
 assign HEX1 = hexbus[14: 8];
 assign HEX2 = hexbus[22:16];
 assign HEX3 = hexbus[30:24];
 
-// Display 7seg
-assign HEX4 = hexbus2[ 6: 0];
-assign HEX5 = hexbus2[14: 8];
-assign HEX6 = hexbus2[22:16];
-assign HEX7 = hexbus2[30:24];
+// 7 seg left
+assign HEX4 = hex_bus[ 6: 0];
+assign HEX5 = hex_bus[14: 8];
+assign HEX6 = hex_bus[22:16];
+assign HEX7 = hex_bus[30:24];
 
-// Led vermelho
-assign LEDR = led_red[17:0];
+// 18 switches
+assign inbus = SW[17:0];
 
-// Led verde
+// led green
 assign LEDG = led_green[8:0];
 
-// Botões
-assign key[ 4:0] = KEY;
+// led red
+assign LEDR = led_red[17:0];
 
-// Switch
-assign switch[17:0] = SW;
-
-
-assign inbus = SW[15:0];
+// push button
+assign push_button = KEY[3:0];
 
 endmodule

@@ -1,5 +1,5 @@
 Restore Archived Project report for pcihello
-Sat Apr 15 15:46:28 2023
+Fri Oct 14 19:42:31 2022
 Quartus Prime Version 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 
 
@@ -36,7 +36,7 @@ refer to the applicable agreement for further details.
 +-------------------------------------------------------------------------+
 ; Restore Archived Project Summary                                        ;
 +---------------------------------+---------------------------------------+
-; Restore Archived Project Status ; Successful - Sat Apr 15 15:46:28 2023 ;
+; Restore Archived Project Status ; Successful - Fri Oct 14 19:42:31 2022 ;
 ; Revision Name                   ; pcihello                              ;
 ; Top-level Entity Name           ; pcihello                              ;
 ; Family                          ; Cyclone IV GX                         ;
@@ -46,14 +46,14 @@ refer to the applicable agreement for further details.
 +-----------------------------------+
 ; Restore Archived Project Messages ;
 +-----------------------------------+
-Info: Successfully restored 'C:/Users/natha/OneDrive/Área de Trabalho/mapeamento-0.1-rc1/mapeamento/pcihello.qar' into the 'C:/Users/natha/OneDrive/Área de Trabalho/mapeamento-0.1-rc1/mapeamento/pcihello_restored/' directory
+Info: Successfully restored 'C:/Users/clara/Music/mapeamento-completo/mapeamento/pcihello.qar' into the 'C:/Users/clara/Music/mapeamento-completo/mapeamento/pcihello_restored/' directory
 Info: Generated report 'pcihello.restore.rpt'
 Info (23030): Evaluation of Tcl script c:/intelfpga_lite/17.1/quartus/common/tcl/apps/qpm/qar.tcl was successful
 Info: Quartus Prime Shell was successful. 0 errors, 122 warnings
-    Info: Peak virtual memory: 4822 megabytes
-    Info: Processing ended: Sat Apr 15 15:46:28 2023
+    Info: Peak virtual memory: 4837 megabytes
+    Info: Processing ended: Fri Oct 14 19:42:31 2022
     Info: Elapsed time: 00:00:03
-    Info: Total CPU time (on all processors): 00:00:01
+    Info: Total CPU time (on all processors): 00:00:02
 
 
 +----------------+

@@ -2,7 +2,7 @@
 		port (
 			hex_display_external_connection_export : out std_logic_vector(31 downto 0);                    -- export
 			hexport_external_connection_export     : out std_logic_vector(31 downto 0);                    -- export
-			inport_external_connection_export      : in  std_logic_vector(15 downto 0) := (others => 'X'); -- export
+			inport_external_connection_export      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- export
 			led_green_external_connection_export   : out std_logic_vector(31 downto 0);                    -- export
 			led_red_external_connection_export     : out std_logic_vector(31 downto 0);                    -- export
 			pcie_hard_ip_0_pcie_rstn_export        : in  std_logic                     := 'X';             -- export
@@ -11,8 +11,7 @@
 			pcie_hard_ip_0_refclk_export           : in  std_logic                     := 'X';             -- export
 			pcie_hard_ip_0_rx_in_rx_datain_0       : in  std_logic                     := 'X';             -- rx_datain_0
 			pcie_hard_ip_0_tx_out_tx_dataout_0     : out std_logic;                                        -- tx_dataout_0
-			switch_external_connection_export      : in  std_logic_vector(31 downto 0) := (others => 'X'); -- export
-			key_external_connection_export         : in  std_logic_vector(31 downto 0) := (others => 'X')  -- export
+			push_button_external_connection_export : in  std_logic_vector(31 downto 0) := (others => 'X')  -- export
 		);
 	end component pcihellocore;
 
@@ -29,7 +28,6 @@
 			pcie_hard_ip_0_refclk_export           => CONNECTED_TO_pcie_hard_ip_0_refclk_export,           --           pcie_hard_ip_0_refclk.export
 			pcie_hard_ip_0_rx_in_rx_datain_0       => CONNECTED_TO_pcie_hard_ip_0_rx_in_rx_datain_0,       --            pcie_hard_ip_0_rx_in.rx_datain_0
 			pcie_hard_ip_0_tx_out_tx_dataout_0     => CONNECTED_TO_pcie_hard_ip_0_tx_out_tx_dataout_0,     --           pcie_hard_ip_0_tx_out.tx_dataout_0
-			switch_external_connection_export      => CONNECTED_TO_switch_external_connection_export,      --      switch_external_connection.export
-			key_external_connection_export         => CONNECTED_TO_key_external_connection_export          --         key_external_connection.export
+			push_button_external_connection_export => CONNECTED_TO_push_button_external_connection_export  -- push_button_external_connection.export
 		);
 

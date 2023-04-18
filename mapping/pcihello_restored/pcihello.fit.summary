@@ -1,14 +1,14 @@
-Fitter Status : Successful - Sat Apr 15 15:55:17 2023
+Fitter Status : Successful - Tue Apr 18 15:48:38 2023
 Quartus Prime Version : 17.1.0 Build 590 10/25/2017 SJ Lite Edition
 Revision Name : pcihello
 Top-level Entity Name : pcihello
 Family : Cyclone IV GX
 Device : EP4CGX150DF31C7
 Timing Models : Final
-Total logic elements : 6,502 / 149,760 ( 4 % )
-    Total combinational functions : 5,600 / 149,760 ( 4 % )
-    Dedicated logic registers : 3,996 / 149,760 ( 3 % )
-Total registers : 3996
+Total logic elements : 6,191 / 149,760 ( 4 % )
+    Total combinational functions : 5,348 / 149,760 ( 4 % )
+    Dedicated logic registers : 3,836 / 149,760 ( 3 % )
+Total registers : 3836
 Total pins : 119 / 508 ( 23 % )
 Total virtual pins : 0
 Total memory bits : 54,656 / 6,635,520 ( < 1 % )

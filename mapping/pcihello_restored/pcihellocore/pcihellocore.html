@@ -67,7 +67,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
   </table>
   <table class="blueBar">
    <tr>
-    <td class="l">2023.04.15.15:51:46</td>
+    <td class="l">2023.04.18.15:43:35</td>
     <td class="r">Datasheet</td>
    </tr>
   </table>
@@ -93,9 +93,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <a href="#module_inport"><b>inport</b>
      </a> altera_avalon_pio 17.1
      <br/>&#160;&#160;
-     <a href="#module_key"><b>key</b>
-     </a> altera_avalon_pio 17.1
-     <br/>&#160;&#160;
      <a href="#module_led_green"><b>led_green</b>
      </a> altera_avalon_pio 17.1
      <br/>&#160;&#160;
@@ -105,7 +102,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <a href="#module_pcie_hard_ip_0"><b>pcie_hard_ip_0</b>
      </a> altera_pcie_hard_ip 17.1
      <br/>&#160;&#160;
-     <a href="#module_switch"><b>switch</b>
+     <a href="#module_push_button"><b>push_button</b>
      </a> altera_avalon_pio 17.1</span>
    </div>
   </div>
@@ -131,7 +128,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    </tr>
    <tr>
     <td class="slaveb">s1&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>0000c040</td>
+    <td class="addr"><span style="color:#989898">0x</span>0000c160</td>
    </tr>
    <tr>
     <td class="slavemodule">&#160;
@@ -142,7 +139,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    </tr>
    <tr>
     <td class="slaveb">s1&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>0000c000</td>
+    <td class="addr"><span style="color:#989898">0x</span>0000c040</td>
    </tr>
    <tr>
     <td class="slavemodule">&#160;
@@ -153,18 +150,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    </tr>
    <tr>
     <td class="slaveb">s1&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>0000c020</td>
-   </tr>
-   <tr>
-    <td class="slavemodule">&#160;
-     <a href="#module_key"><b>key</b>
-     </a>
-    </td>
-    <td class="empty"></td>
-   </tr>
-   <tr>
-    <td class="slaveb">s1&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>0000c100</td>
+    <td class="addr"><span style="color:#989898">0x</span>0000c080</td>
    </tr>
    <tr>
     <td class="slavemodule">&#160;
@@ -175,7 +161,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    </tr>
    <tr>
     <td class="slaveb">s1&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>0000c080</td>
+    <td class="addr"><span style="color:#989898">0x</span>0000c100</td>
    </tr>
    <tr>
     <td class="slavemodule">&#160;
@@ -186,7 +172,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    </tr>
    <tr>
     <td class="slaveb">s1&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>0000c060</td>
+    <td class="addr"><span style="color:#989898">0x</span>0000c120</td>
    </tr>
    <tr>
     <td class="slavemodule">&#160;
@@ -205,14 +191,14 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
    </tr>
    <tr>
     <td class="slavemodule">&#160;
-     <a href="#module_switch"><b>switch</b>
+     <a href="#module_push_button"><b>push_button</b>
      </a>
     </td>
     <td class="empty"></td>
    </tr>
    <tr>
     <td class="slaveb">s1&#160;</td>
-    <td class="addr"><span style="color:#989898">0x</span>0000c120</td>
+    <td class="addr"><span style="color:#989898">0x</span>0000c140</td>
    </tr>
   </table>
   <a name="module_hex_display"> </a>
@@ -475,7 +461,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">resetValue</td>
-        <td class="parametervalue">0</td>
+        <td class="parametervalue">4294967295</td>
        </tr>
        <tr>
         <td class="parametername">simDoTestBenchWiring</td>
@@ -592,7 +578,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">RESET_VALUE</td>
-        <td class="parametervalue">0</td>
+        <td class="parametervalue">4294967295</td>
        </tr>
       </table>
      </td>
@@ -679,198 +665,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">width</td>
-        <td class="parametervalue">16</td>
-       </tr>
-       <tr>
-        <td class="parametername">clockRate</td>
-        <td class="parametervalue">125000000</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_has_tri</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_has_out</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_has_in</td>
-        <td class="parametervalue">true</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_do_test_bench_wiring</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_capture</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_edge_type</td>
-        <td class="parametervalue">NONE</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_irq_type</td>
-        <td class="parametervalue">NONE</td>
-       </tr>
-       <tr>
-        <td class="parametername">derived_has_irq</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">deviceFamily</td>
-        <td class="parametervalue">UNKNOWN</td>
-       </tr>
-       <tr>
-        <td class="parametername">generateLegacySim</td>
-        <td class="parametervalue">false</td>
-       </tr>
-      </table>
-     </td>
-    </tr>
-   </table>&#160;&#160;
-   <table class="flowbox">
-    <tr>
-     <td class="parametersbox">
-      <h2>Software Assignments</h2>
-      <table>
-       <tr>
-        <td class="parametername">BIT_CLEARING_EDGE_REGISTER</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">BIT_MODIFYING_OUTPUT_REGISTER</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">CAPTURE</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">DATA_WIDTH</td>
-        <td class="parametervalue">16</td>
-       </tr>
-       <tr>
-        <td class="parametername">DO_TEST_BENCH_WIRING</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">DRIVEN_SIM_VALUE</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">EDGE_TYPE</td>
-        <td class="parametervalue">NONE</td>
-       </tr>
-       <tr>
-        <td class="parametername">FREQ</td>
-        <td class="parametervalue">125000000</td>
-       </tr>
-       <tr>
-        <td class="parametername">HAS_IN</td>
-        <td class="parametervalue">1</td>
-       </tr>
-       <tr>
-        <td class="parametername">HAS_OUT</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">HAS_TRI</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">IRQ_TYPE</td>
-        <td class="parametervalue">NONE</td>
-       </tr>
-       <tr>
-        <td class="parametername">RESET_VALUE</td>
-        <td class="parametervalue">0</td>
-       </tr>
-      </table>
-     </td>
-    </tr>
-   </table>
-  </div>
-  <a name="module_key"> </a>
-  <div>
-   <hr/>
-   <h2>key</h2>altera_avalon_pio v17.1
-   <br/>
-   <div class="greydiv">
-    <table class="connectionboxes">
-     <tr>
-      <td class="neighbor" rowspan="6">
-       <a href="#module_pcie_hard_ip_0">pcie_hard_ip_0</a>
-      </td>
-      <td class="from">bar0&#160;&#160;</td>
-      <td class="main" rowspan="6">key</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;s1</td>
-     </tr>
-     <tr>
-      <td class="from">pcie_core_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr>
-      <td class="from">pcie_core_reset&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td class="to">&#160;&#160;reset</td>
-     </tr>
-    </table>
-   </div>
-   <br/>
-   <br/>
-   <table class="flowbox">
-    <tr>
-     <td class="parametersbox">
-      <h2>Parameters</h2>
-      <table>
-       <tr>
-        <td class="parametername">bitClearingEdgeCapReg</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">bitModifyingOutReg</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">captureEdge</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">direction</td>
-        <td class="parametervalue">Input</td>
-       </tr>
-       <tr>
-        <td class="parametername">edgeType</td>
-        <td class="parametervalue">RISING</td>
-       </tr>
-       <tr>
-        <td class="parametername">generateIRQ</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">irqType</td>
-        <td class="parametervalue">LEVEL</td>
-       </tr>
-       <tr>
-        <td class="parametername">resetValue</td>
-        <td class="parametervalue">1</td>
-       </tr>
-       <tr>
-        <td class="parametername">simDoTestBenchWiring</td>
-        <td class="parametervalue">false</td>
-       </tr>
-       <tr>
-        <td class="parametername">simDrivenValue</td>
-        <td class="parametervalue">0</td>
-       </tr>
-       <tr>
-        <td class="parametername">width</td>
         <td class="parametervalue">32</td>
        </tr>
        <tr>
@@ -976,7 +770,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        </tr>
        <tr>
         <td class="parametername">RESET_VALUE</td>
-        <td class="parametervalue">1</td>
+        <td class="parametervalue">0</td>
        </tr>
       </table>
      </td>
@@ -1377,7 +1171,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
      <tr>
       <td></td>
       <td></td>
-      <td class="main" rowspan="48">pcie_hard_ip_0</td>
+      <td class="main" rowspan="41">pcie_hard_ip_0</td>
       <td class="from">bar0&#160;&#160;</td>
       <td class="neighbor" rowspan="6">
        <a href="#module_inport">inport</a>
@@ -1488,42 +1282,6 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td class="from">bar0&#160;&#160;</td>
       <td class="neighbor" rowspan="6">
-       <a href="#module_led_red">led_red</a>
-      </td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;s1</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">pcie_core_clk&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;clk</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">pcie_core_reset&#160;&#160;</td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="to">&#160;&#160;reset</td>
-     </tr>
-     <tr style="height:6px">
-      <td></td>
-     </tr>
-     <tr>
-      <td></td>
-      <td></td>
-      <td class="from">bar0&#160;&#160;</td>
-      <td class="neighbor" rowspan="6">
        <a href="#module_led_green">led_green</a>
       </td>
      </tr>
@@ -1560,7 +1318,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td class="from">bar0&#160;&#160;</td>
       <td class="neighbor" rowspan="6">
-       <a href="#module_key">key</a>
+       <a href="#module_push_button">push_button</a>
       </td>
      </tr>
      <tr>
@@ -1596,7 +1354,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
       <td></td>
       <td class="from">bar0&#160;&#160;</td>
       <td class="neighbor" rowspan="6">
-       <a href="#module_switch">switch</a>
+       <a href="#module_led_red">led_red</a>
       </td>
      </tr>
      <tr>
@@ -2444,10 +2202,10 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
     </tr>
    </table>
   </div>
-  <a name="module_switch"> </a>
+  <a name="module_push_button"> </a>
   <div>
    <hr/>
-   <h2>switch</h2>altera_avalon_pio v17.1
+   <h2>push_button</h2>altera_avalon_pio v17.1
    <br/>
    <div class="greydiv">
     <table class="connectionboxes">
@@ -2456,7 +2214,7 @@ div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; bord
        <a href="#module_pcie_hard_ip_0">pcie_hard_ip_0</a>
       </td>
       <td class="from">bar0&#160;&#160;</td>
-      <td class="main" rowspan="6">switch</td>
+      <td class="main" rowspan="6">push_button</td>
      </tr>
      <tr>
       <td class="to">&#160;&#160;s1</td>
