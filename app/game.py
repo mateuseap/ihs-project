@@ -175,9 +175,15 @@ def game_loop(): # famoso loop infinito
         obstaculo3= pygame.Rect(obstaculo_X3, obstaculo_Y, obstaculo_sprite.get_width(), obstaculo_sprite.get_height())
 
         if moving_right == True:
-            player_location[0] += 4
+            if player_location[0] < 1000:
+                player_location[0] += 4
+            else:
+                player_location[0] = 1000
         if moving_left == True:
-            player_location[0] -= 4
+            if player_location[0] > 0:
+                player_location[0] -= 4
+            else:
+                player_location[0] = 0
         player_location[1] += vertical_momentum
         vertical_momentum += 0.3
         if vertical_momentum > 5:
