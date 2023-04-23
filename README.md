@@ -8,8 +8,11 @@
 
     .
     ├── app
-    │   └── game.py
-    │   └── utils.py
+    │   ├── assets
+    │   │   └── *
+    │   ├── game.py
+    │   ├── start.py
+    │   └── utils.py
     ├── docs
     │   └── COMMANDS.md
     ├── driver
@@ -25,7 +28,6 @@
     ├── mapping
     │   └── *
     ├── .gitignore 
-    ├── Makefile
     ├── README.md
     └── setup.sh
 
@@ -35,8 +37,6 @@ Just open up a terminal and run the below commands:
 
 ```bash
 sh setup.sh
-cd app
-python game.py
 ```
 
 Then you're ready to go 😁
