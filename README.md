@@ -33,13 +33,13 @@
 
 ## 🚀 How to run the project
 
-Just open up a terminal and run the below commands:
+Just open up a terminal and run the below command:
 
 ```bash
 sh setup.sh
 ```
 
-Then you're ready to go 😁
+Then you're ready to go, have fun! 😁
 
 ## 👥 Group
 
