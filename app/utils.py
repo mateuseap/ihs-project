@@ -63,16 +63,30 @@ def seven_segment(fd, num, display, show_output_msg):
     if show_output_msg:
         print(f'>>> wrote {retval} bytes on seven segments!')
 
-def red_leds(fd, on, sequence, show_output_msg):
+def red_leds(fd, on, inverse, sequence, show_output_msg):
     if sequence:
-        data = 0b111111111111111111
-        output_msg = '>>> red leds sequence!'
+        if inverse:
+            data = 0b111111111111111111
+            output_msg = '>>> red leds inverse sequence!'
 
-        for i in range(0, 18):
-            ioctl(fd, WR_RED_LEDS)
-            os.write(fd, data.to_bytes(4,'little'))
-            sleep(0.1)
-            data >>= 1
+            for i in range(18, -1, -1):
+                ioctl(fd, WR_RED_LEDS)
+                os.write(fd, data.to_bytes(4,'little'))
+                sleep(0.1)
+                data_bin = bin(data)
+                data_bin = data_bin[2:]
+                data_bin = data_bin[:i] + '0' + data_bin[i+1:]
+                data_bin = '0b' + data_bin
+                data = int(data_bin, 2)
+        else:
+            data = 0b111111111111111111
+            output_msg = '>>> red leds sequence!'
+
+            for i in range(0, 18):
+                ioctl(fd, WR_RED_LEDS)
+                os.write(fd, data.to_bytes(4,'little'))
+                sleep(0.1)
+                data >>= 1
     else:
         if on:
             data = 0b111111111111111111
@@ -87,16 +101,30 @@ def red_leds(fd, on, sequence, show_output_msg):
     if show_output_msg:
         print(output_msg)
 
-def green_leds(fd, on, sequence, show_output_msg):
+def green_leds(fd, on, inverse, sequence, show_output_msg):
     if sequence:
-        data = 0b11111111
-        output_msg = '>>> green leds sequence!'
+        if inverse:
+            data = 0b11111111
+            output_msg = '>>> green leds inverse sequence!'
 
-        for i in range(0, 9):
-            ioctl(fd, WR_GREEN_LEDS)
-            os.write(fd, data.to_bytes(4,'little'))
-            sleep(0.1)
-            data >>= 1
+            for i in range(18, -1, -1):
+                ioctl(fd, WR_GREEN_LEDS)
+                os.write(fd, data.to_bytes(4,'little'))
+                sleep(0.1)
+                data_bin = bin(data)
+                data_bin = data_bin[2:]
+                data_bin = data_bin[:i] + '0' + data_bin[i+1:]
+                data_bin = '0b' + data_bin
+                data = int(data_bin, 2)
+        else:
+            data = 0b11111111       
+            output_msg = '>>> green leds sequence!'
+
+            for i in range(0, 9):
+                ioctl(fd, WR_GREEN_LEDS)
+                os.write(fd, data.to_bytes(4,'little'))
+                sleep(0.1)
+                data >>= 1
     else:
         if on:
             data = 0b111111111
