@@ -85,7 +85,7 @@ module pcihellocore (
 		.out_port   (hex_display_external_connection_export)       // external_connection.export
 	);
 
-	pcihellocore_hexport hexport (
+	pcihellocore_hex_display hexport (
 		.clk        (pcie_hard_ip_0_pcie_core_clk_clk),        //                 clk.clk
 		.reset_n    (~rst_controller_reset_out_reset),         //               reset.reset_n
 		.address    (mm_interconnect_0_hexport_s1_address),    //                  s1.address

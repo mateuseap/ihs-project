@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="pcihellocore" kind="system" version="17.1" fabric="QSYS">
  <!-- Format version 17.1 590 (Future versions may contain additional information.) -->
- <!-- 2023.04.18.15:44:13 -->
+ <!-- 2023.04.24.16:47:12 -->
  <!-- A collection of modules and connections -->
  <parameter name="clockCrossingAdapter">
   <type>com.altera.sopcmodel.ensemble.EClockAdapter</type>
@@ -53,7 +53,7 @@
  </parameter>
  <parameter name="generationId">
   <type>int</type>
-  <value>1681843415</value>
+  <value>1682365614</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>true</visible>
@@ -978,7 +978,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.RESET_VALUE</name>
-   <value>4294967295</value>
+   <value>1077952576</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
@@ -998,7 +998,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.params.resetvalue</name>
-   <value>4294967295</value>
+   <value>1077952576</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
@@ -1062,7 +1062,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="resetValue">
    <type>long</type>
-   <value>4294967295</value>
+   <value>1077952576</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -13552,5 +13552,5 @@ parameters are a RESULT of the module parameters. -->
   <version>17.1</version>
  </plugin>
  <reportVersion>17.1 590</reportVersion>
- <uniqueIdentifier>C603A8D1B2300000018795ADFDBB</uniqueIdentifier>
+ <uniqueIdentifier>0045E27EC13600000187B4CE16C9</uniqueIdentifier>
 </EnsembleReport>

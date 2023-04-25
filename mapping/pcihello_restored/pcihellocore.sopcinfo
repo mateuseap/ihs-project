@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <EnsembleReport name="pcihellocore" kind="pcihellocore" version="1.0" fabric="QSYS">
  <!-- Format version 17.1 590 (Future versions may contain additional information.) -->
- <!-- 2023.04.18.15:47:02 -->
+ <!-- 2023.04.24.16:47:59 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1681843622</value>
+  <value>1682365679</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -896,7 +896,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.CMacro.RESET_VALUE</name>
-   <value>4294967295</value>
+   <value>1077952576</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.compatible</name>
@@ -916,7 +916,7 @@ the requested settings for a module instance. -->
   </assignment>
   <assignment>
    <name>embeddedsw.dts.params.resetvalue</name>
-   <value>4294967295</value>
+   <value>1077952576</value>
   </assignment>
   <assignment>
    <name>embeddedsw.dts.vendor</name>
@@ -980,7 +980,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="resetValue">
    <type>long</type>
-   <value>4294967295</value>
+   <value>1077952576</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>

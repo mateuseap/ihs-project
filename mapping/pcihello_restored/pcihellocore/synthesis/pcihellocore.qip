@@ -2,7 +2,7 @@ set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_TO
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_TOOL_VERSION "17.1"
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_TOOL_ENV "Qsys"
 set_global_assignment -library "pcihellocore" -name SOPCINFO_FILE [file join $::quartus(qip_path) "../../pcihellocore.sopcinfo"]
-set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name SLD_INFO "QSYS_NAME pcihellocore HAS_SOPCINFO 1 GENERATION_ID 1681843415"
+set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name SLD_INFO "QSYS_NAME pcihellocore HAS_SOPCINFO 1 GENERATION_ID 1682365614"
 set_global_assignment -library "pcihellocore" -name MISC_FILE [file join $::quartus(qip_path) "../pcihellocore.cmp"]
 set_global_assignment -library "pcihellocore" -name SLD_FILE [file join $::quartus(qip_path) "pcihellocore.regmap"]
 set_global_assignment -library "pcihellocore" -name SLD_FILE [file join $::quartus(qip_path) "pcihellocore.debuginfo"]
@@ -16,7 +16,7 @@ set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_CO
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_REPORT_HIERARCHY "On"
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_INTERNAL "Off"
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_VERSION "MS4w"
-set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTY4MTg0MzQxNQ==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTY4MjM2NTYxNA==::QXV0byBHRU5FUkFUSU9OX0lE"
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::Q3ljbG9uZSBJViBHWA==::QXV0byBERVZJQ0VfRkFNSUxZ"
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::RVA0Q0dYMTUwREYzMUM3::QXV0byBERVZJQ0U="
 set_global_assignment -entity "pcihellocore" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Nw==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="
@@ -1157,25 +1157,6 @@ set_global_assignment -entity "pcihellocore_inport" -library "pcihellocore" -nam
 set_global_assignment -entity "pcihellocore_inport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9lZGdlX3R5cGU=::Tk9ORQ==::ZGVyaXZlZF9lZGdlX3R5cGU="
 set_global_assignment -entity "pcihellocore_inport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9pcnFfdHlwZQ==::Tk9ORQ==::ZGVyaXZlZF9pcnFfdHlwZQ=="
 set_global_assignment -entity "pcihellocore_inport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9oYXNfaXJx::ZmFsc2U=::ZGVyaXZlZF9oYXNfaXJx"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_NAME "cGNpaGVsbG9jb3JlX2hleHBvcnQ="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_DISPLAY_NAME "UElPIChQYXJhbGxlbCBJL08p"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_INTERNAL "Off"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_AUTHOR "QWx0ZXJhIENvcnBvcmF0aW9u"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_VERSION "MTcuMQ=="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "Yml0TW9kaWZ5aW5nT3V0UmVn::ZmFsc2U=::RW5hYmxlIGluZGl2aWR1YWwgYml0IHNldHRpbmcvY2xlYXJpbmc="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGlyZWN0aW9u::T3V0cHV0::RGlyZWN0aW9u"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "cmVzZXRWYWx1ZQ==::NDI5NDk2NzI5NQ==::T3V0cHV0IFBvcnQgUmVzZXQgVmFsdWU="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "d2lkdGg=::MzI=::V2lkdGggKDEtMzIgYml0cyk="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "Y2xvY2tSYXRl::MTI1MDAwMDAw::Y2xvY2tSYXRl"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9oYXNfdHJp::ZmFsc2U=::ZGVyaXZlZF9oYXNfdHJp"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9oYXNfb3V0::dHJ1ZQ==::ZGVyaXZlZF9oYXNfb3V0"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9oYXNfaW4=::ZmFsc2U=::ZGVyaXZlZF9oYXNfaW4="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9kb190ZXN0X2JlbmNoX3dpcmluZw==::ZmFsc2U=::ZGVyaXZlZF9kb190ZXN0X2JlbmNoX3dpcmluZw=="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9jYXB0dXJl::ZmFsc2U=::ZGVyaXZlZF9jYXB0dXJl"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9lZGdlX3R5cGU=::Tk9ORQ==::ZGVyaXZlZF9lZGdlX3R5cGU="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9pcnFfdHlwZQ==::Tk9ORQ==::ZGVyaXZlZF9pcnFfdHlwZQ=="
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_COMPONENT_PARAMETER "ZGVyaXZlZF9oYXNfaXJx::ZmFsc2U=::ZGVyaXZlZF9oYXNfaXJx"
 set_global_assignment -entity "pcihellocore_hex_display" -library "pcihellocore" -name IP_COMPONENT_NAME "cGNpaGVsbG9jb3JlX2hleF9kaXNwbGF5"
 set_global_assignment -entity "pcihellocore_hex_display" -library "pcihellocore" -name IP_COMPONENT_DISPLAY_NAME "UElPIChQYXJhbGxlbCBJL08p"
 set_global_assignment -entity "pcihellocore_hex_display" -library "pcihellocore" -name IP_COMPONENT_REPORT_HIERARCHY "Off"
@@ -1265,7 +1246,6 @@ set_global_assignment -library "pcihellocore" -name VERILOG_FILE [file join $::q
 set_global_assignment -library "pcihellocore" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/altpciexpav_lite_app.v"]
 set_global_assignment -library "pcihellocore" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/pcihellocore_led_green.v"]
 set_global_assignment -library "pcihellocore" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/pcihellocore_inport.v"]
-set_global_assignment -library "pcihellocore" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/pcihellocore_hexport.v"]
 set_global_assignment -library "pcihellocore" -name VERILOG_FILE [file join $::quartus(qip_path) "submodules/pcihellocore_hex_display.v"]
 
 set_global_assignment -entity "altera_reset_controller" -library "pcihellocore" -name IP_TOOL_NAME "altera_reset_controller"
@@ -1343,9 +1323,6 @@ set_global_assignment -entity "pcihellocore_led_green" -library "pcihellocore" -
 set_global_assignment -entity "pcihellocore_inport" -library "pcihellocore" -name IP_TOOL_NAME "altera_avalon_pio"
 set_global_assignment -entity "pcihellocore_inport" -library "pcihellocore" -name IP_TOOL_VERSION "17.1"
 set_global_assignment -entity "pcihellocore_inport" -library "pcihellocore" -name IP_TOOL_ENV "Qsys"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_TOOL_NAME "altera_avalon_pio"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_TOOL_VERSION "17.1"
-set_global_assignment -entity "pcihellocore_hexport" -library "pcihellocore" -name IP_TOOL_ENV "Qsys"
 set_global_assignment -entity "pcihellocore_hex_display" -library "pcihellocore" -name IP_TOOL_NAME "altera_avalon_pio"
 set_global_assignment -entity "pcihellocore_hex_display" -library "pcihellocore" -name IP_TOOL_VERSION "17.1"
 set_global_assignment -entity "pcihellocore_hex_display" -library "pcihellocore" -name IP_TOOL_ENV "Qsys"

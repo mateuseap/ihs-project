@@ -178,7 +178,7 @@ VCCIO3                       : AC12      : power  :                   : 2.5V    
 VCCIO3                       : AC13      : power  :                   : 2.5V    : 3         :                
 GND                          : AC14      : gnd    :                   :         :           :                
 VCCIO3                       : AC15      : power  :                   : 2.5V    : 3         :                
-PCIE_TX_P[1]                 : AC16      : output : 2.5 V             :         : 3         : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : AC16      :        :                   :         : 3         :                
 GND                          : AC17      : gnd    :                   :         :           :                
 VCCIO4                       : AC18      : power  :                   : 2.5V    : 4         :                
 VCCIO4                       : AC19      : power  :                   : 2.5V    : 4         :                
@@ -306,7 +306,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : AG20      :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : AG21      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AG22      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AG23      :        :                   :         : 4         :                
-PCIE_RX_P[1]                 : AG24      : input  : 2.5 V             :         : 4         : N              
+RESERVED_INPUT_WITH_WEAK_PULLUP : AG24      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AG25      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AG26      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AG27      :        :                   :         : 4         :                
@@ -336,7 +336,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : AH20      :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH21      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH22      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH23      :        :                   :         : 4         :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : AH24      :        :                   :         : 4         :                
+PCIE_TX_P[1]                 : AH24      : output : 2.5 V             :         : 4         : N              
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH25      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH26      :        :                   :         : 4         :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AH27      :        :                   :         : 4         :                
@@ -370,7 +370,7 @@ RESERVED_INPUT_WITH_WEAK_PULLUP : AJ24      :        :                   :      
 RESERVED_INPUT_WITH_WEAK_PULLUP : AJ25      :        :                   :         : 4         :                
 GND                          : AJ26      : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AJ27      :        :                   :         : 4         :                
-RESERVED_INPUT_WITH_WEAK_PULLUP : AJ28      :        :                   :         : 4         :                
+PCIE_RX_P[1]                 : AJ28      : input  : 2.5 V             :         : 4         : N              
 GND                          : AJ29      : gnd    :                   :         :           :                
 RESERVED_INPUT_WITH_WEAK_PULLUP : AJ30      :        :                   :         : 5         :                
 NC                           : AK2       :        :                   :         :           :                

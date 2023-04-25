@@ -131,7 +131,7 @@ refer to the applicable agreement for further details.
 		(text "tx_dataout_0" (rect 261 443 594 896)(font "Arial" (color 0 0 0)))
 		(text "push_button_external_connection" (rect 62 459 310 931)(font "Arial" (color 128 0 0)(font_size 9)))
 		(text "export" (rect 261 483 558 976)(font "Arial" (color 0 0 0)))
-		(text " pcihellocore " (rect 555 504 1194 1018)(font "Arial" ))
+		(text " system " (rect 573 504 1194 1018)(font "Arial" ))
 		(line (pt 256 32)(pt 352 32)(line_width 1))
 		(line (pt 352 32)(pt 352 504)(line_width 1))
 		(line (pt 256 504)(pt 352 504)(line_width 1))
